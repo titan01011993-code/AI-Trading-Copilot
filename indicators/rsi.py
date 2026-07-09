@@ -1,15 +1,37 @@
 import pandas as pd
-import ta
 
 
-class RSI:
+class RSIIndicator:
+    """
+    Relative Strength Index (RSI)
+    """
 
     @staticmethod
-    def calculate(df, period=14):
+    def calculate(
+        df: pd.DataFrame,
+        period: int = 14,
+    ) -> pd.DataFrame:
 
-        df["RSI"] = ta.momentum.RSIIndicator(
-            close=df["close"],
-            window=period,
-        ).rsi()
+        data = df.copy()
 
-        return df
+        delta = data["close"].diff()
+
+        gain = delta.clip(lower=0)
+
+        loss = -delta.clip(upper=0)
+
+        avg_gain = gain.ewm(
+            alpha=1 / period,
+            adjust=False
+        ).mean()
+
+        avg_loss = loss.ewm(
+            alpha=1 / period,
+            adjust=False
+        ).mean()
+
+        rs = avg_gain / avg_loss
+
+        data["RSI"] = 100 - (100 / (1 + rs))
+
+        return data

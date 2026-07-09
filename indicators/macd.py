@@ -1,15 +1,30 @@
-import ta
+import pandas as pd
 
 
-class MACD:
+class MACDIndicator:
 
     @staticmethod
-    def calculate(df):
+    def calculate(
+        df: pd.DataFrame,
+        fast: int = 12,
+        slow: int = 26,
+        signal: int = 9,
+    ) -> pd.DataFrame:
 
-        macd = ta.trend.MACD(df["close"])
+        data = df.copy()
 
-        df["MACD"] = macd.macd()
-        df["MACD_SIGNAL"] = macd.macd_signal()
-        df["MACD_HIST"] = macd.macd_diff()
+        ema_fast = data["close"].ewm(span=fast, adjust=False).mean()
+        ema_slow = data["close"].ewm(span=slow, adjust=False).mean()
 
-        return df
+        data["MACD"] = ema_fast - ema_slow
+        data["MACD_SIGNAL"] = (
+            data["MACD"]
+            .ewm(span=signal, adjust=False)
+            .mean()
+        )
+
+        data["MACD_HIST"] = (
+            data["MACD"] - data["MACD_SIGNAL"]
+        )
+
+        return data

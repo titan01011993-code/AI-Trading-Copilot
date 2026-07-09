@@ -1,9 +1,8 @@
-from market.instruments import InstrumentService
+from market.nifty import NiftyService
 
-service = InstrumentService()
+service = NiftyService()
 
-print("=" * 80)
-print(service.search("NIFTY").head(20))
-print("=" * 80)
+df = service.load()
 
-print(service.search("BANK").head(20))
+print(df.tail())
+print(df.shape)

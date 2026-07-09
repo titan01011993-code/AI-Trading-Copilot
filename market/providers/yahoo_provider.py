@@ -11,7 +11,12 @@ class YahooProvider(BaseProvider):
 
     def get_history(self, symbol: str) -> pd.DataFrame:
 
-        ticker = f"{symbol.upper()}.NS"
+        if symbol.upper() == "^NSEI":
+         ticker = "^NSEI"
+        elif symbol.upper() == "^NSEBANK":
+         ticker = "^NSEBANK"
+        else:
+         ticker = f"{symbol.upper()}.NS"
 
         df = yf.download(
             ticker,
