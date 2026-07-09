@@ -1,17 +1,25 @@
 import pandas as pd
 
 
-class EMA:
+class EMAIndicator:
+    """
+    Exponential Moving Average Indicator
+    """
 
     @staticmethod
-    def calculate(df: pd.DataFrame, period: int):
+    def calculate(
+        df: pd.DataFrame,
+        periods=(20, 50, 200),
+    ) -> pd.DataFrame:
 
-        column = f"EMA_{period}"
+        data = df.copy()
 
-        df[column] = (
-            df["close"]
-            .ewm(span=period, adjust=False)
-            .mean()
-        )
+        for period in periods:
 
-        return df
+            data[f"EMA_{period}"] = (
+                data["close"]
+                .ewm(span=period, adjust=False)
+                .mean()
+            )
+
+        return data
