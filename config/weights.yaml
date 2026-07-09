@@ -1,0 +1,10 @@
+ema_alignment: 20
+rsi: 10
+macd: 15
+adx: 10
+vwap: 10
+price_action: 10
+support_resistance: 10
+option_chain: 10
+volume: 5
+market_structure: 10

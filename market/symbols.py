@@ -1,0 +1,11 @@
+"""
+Market Symbols
+"""
+
+NIFTY = "NIFTY"
+
+BANKNIFTY = "BANKNIFTY"
+
+FINNIFTY = "FINNIFTY"
+
+MIDCPNIFTY = "MIDCPNIFTY"
