@@ -1,44 +1,68 @@
 import streamlit as st
 
-st.set_page_config(
-    page_title="AI Trading Copilot",
-    page_icon="📈",
-    layout="wide"
-)
+from dashboard.layout import configure_page, show_header
+from dashboard.charts import CandlestickChart
 
-st.title("📈 AI Trading Copilot")
+from market.historical import HistoricalService
 
-st.success("Broker Status : Connected")
+configure_page()
+
+show_header()
+
+
+history = HistoricalService()
 
 symbol = st.text_input(
-    "Search Symbol",
+
+    "Stock Symbol",
+
     value="RELIANCE"
+
+).upper()
+
+
+df = history.load(symbol)
+
+
+chart = CandlestickChart.build(
+
+    df,
+
+    symbol
+
 )
 
-col1, col2 = st.columns([3, 1])
+st.plotly_chart(
 
-with col1:
-    st.subheader("Chart")
-    st.info("Candlestick chart will appear here.")
+    chart,
 
-with col2:
-    st.subheader("AI Recommendation")
+    use_container_width=True
 
-    st.metric("Signal", "BUY")
+)
 
-    st.metric("Confidence", "91 %")
 
-    st.metric("Trend", "Bullish")
+col1, col2, col3 = st.columns(3)
 
-st.divider()
+col1.metric(
 
-c1, c2, c3 = st.columns(3)
+    "Trend",
 
-with c1:
-    st.metric("EMA20", "Bullish")
+    "Bullish"
 
-with c2:
-    st.metric("RSI", "63")
+)
 
-with c3:
-    st.metric("MACD", "Bullish")
+col2.metric(
+
+    "AI Signal",
+
+    "BUY"
+
+)
+
+col3.metric(
+
+    "Confidence",
+
+    "91%"
+
+)
