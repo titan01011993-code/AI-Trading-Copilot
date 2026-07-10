@@ -8,7 +8,6 @@ with detailed entry, exit, sizing, and management rules.
 from typing import Optional, List
 from dataclasses import dataclass, field
 from datetime import datetime
-import pandas as pd
 
 from core.models import DecisionOutput, Signal
 from core.enums import Recommendation
@@ -137,7 +136,7 @@ class TradePlanner:
         return max(0.0, position_size)
     
     @staticmethod
-    def _calculate_risk_reward(decision: DecisionOutput) -> tuple[float, float, float]:
+    def _calculate_risk_reward(decision: DecisionOutput) -> tuple:
         """
         Calculate risk amount, reward amount, and ratio.
         
@@ -243,8 +242,8 @@ class TradeManager:
     
     def __init__(self):
         """Initialize trade manager."""
-        self.active_plans: dict[str, TradePlan] = {}
-        self.completed_plans: list[TradePlan] = []
+        self.active_plans: dict = {}
+        self.completed_plans: list = []
     
     def add_plan(self, plan: TradePlan) -> None:
         """Add a trade plan to active plans."""
