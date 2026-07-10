@@ -7,6 +7,15 @@ class HistoricalService:
 
         self.provider = YahooProvider()
 
-    def load(self, symbol):
+    def load(
+        self,
+        symbol: str,
+        timeframe: str = "1D",
+        period: str | None = None,
+    ):
 
-        return self.provider.get_history(symbol)
+        return self.provider.get_history(
+            symbol=symbol,
+            timeframe=timeframe,
+            period=period,
+        )

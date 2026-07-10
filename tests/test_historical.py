@@ -1,19 +1,30 @@
-from market.historical import HistoricalService
+from market.providers.yahoo_provider import YahooProvider
 
-service = HistoricalService()
 
-df = service.daily(
-    security_id="13",
-    exchange_segment="IDX_I",
-    instrument_type="INDEX",
-    from_date="2026-06-01",
-    to_date="2026-07-08"
-)
+class HistoricalService:
 
-print("=" * 60)
+    def __init__(self):
 
-print(df)
+        self.provider = YahooProvider()
 
-print("=" * 60)
+    def load(
 
-print(df.columns)
+        self,
+
+        symbol: str,
+
+        timeframe: str = "1D",
+
+        period: str | None = None,
+
+    ):
+
+        return self.provider.get_history(
+
+            symbol=symbol,
+
+            timeframe=timeframe,
+
+            period=period,
+
+        )
